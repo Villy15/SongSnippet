@@ -16,4 +16,9 @@ export default {
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
   },
+  white: '#fff',
+  black: '#000',
+  danger: '#ff5252',
+  warning: '#ffc107',
+  success: '#4bb543',
 };
