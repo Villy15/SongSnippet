@@ -1,8 +1,9 @@
 import { View, Text, TextInput, Pressable } from 'react-native'
-import React from 'react'
+import { useState } from 'react'
 import { Stack } from 'expo-router'
 import { Feather } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
+import { Divider } from '../components';
 
 const HomePage = () => {
   return (
@@ -13,11 +14,17 @@ const HomePage = () => {
           headerTitle: 'Home',
         }}
       />
-      {/* Add a container that has an image icon inside */}
       <VideoPlaceHolder />
+
       <LoopSection />
+
+      <Divider />
+
       <PlayBackSpeedSection />
 
+      <Divider />
+
+      <VideoSection />
     </View>
   )
 }
@@ -31,14 +38,14 @@ function VideoPlaceHolder() {
 }
 
 function LoopSection() {
-  const [loop, setLoop] = React.useState(false);
-  const [startTime, setStartTime] = React.useState('00:00');
-  const [endTime, setEndTime] = React.useState('00:00');
+  const [loop, setLoop] = useState(false);
+  const [startTime, setStartTime] = useState('00:00');
+  const [endTime, setEndTime] = useState('00:00');
 
   return (
-    <View className='bg-slate-100 py-4'>
+    <View className=' py-4'>
       <LoopSectionRow text="Start" startTime={startTime} setStartTime={setStartTime} />
-      <View className='py-2'/>
+      <View className='py-2' />
       <LoopSectionRow text={"End".padStart(5)} startTime={endTime} setStartTime={setEndTime} />
     </View>
   )
@@ -74,11 +81,11 @@ function LoopSectionRow({ text, startTime, setStartTime }: { text: string, start
   )
 }
 
-function PlayBackSpeedSection () {
-  const [playBackSpeed, setPlayBackSpeed] = React.useState(1);
+function PlayBackSpeedSection() {
+  const [playBackSpeed, setPlayBackSpeed] = useState(1);
 
   return (
-    <View className='bg-slate-200 py-4'>
+    <View className='py-4'>
       <View className='flex-col'>
         {/* Playback speed */}
         <Text className='text-lg pl-4'>
@@ -105,7 +112,7 @@ function PlayBackSpeedSection () {
             onValueChange={(value) => setPlayBackSpeed(value)}
             minimumValue={0}
             maximumValue={2}
-            minimumTrackTintColor="#FFFFFF"
+            minimumTrackTintColor="#808080"
             maximumTrackTintColor="#000000"
           />
         </View>
@@ -117,7 +124,7 @@ function PlayBackSpeedSection () {
 
 function PlayBackOption({ playBackSpeed, setPlayBackSpeed }: { playBackSpeed: number, setPlayBackSpeed: React.Dispatch<React.SetStateAction<number>> }) {
   return (
-    <Pressable className='px-5 py-4 bg-gray-400 rounded-sm' onPress={
+    <Pressable className='px-5 py-4 rounded-sm' onPress={
       () => {
         setPlayBackSpeed(playBackSpeed);
       }
@@ -129,5 +136,71 @@ function PlayBackOption({ playBackSpeed, setPlayBackSpeed }: { playBackSpeed: nu
   )
 }
 
+function VideoSection() {
+  const [sectionsData, setSectionsData] = useState([
+    { name: 'Intro', time: '00:00' },
+    { name: 'Verse', time: '00:00' },
+    { name: 'Chorus', time: '00:00' },
+    { name: 'Bridge', time: '00:00' },
+  ]);
+
+
+  return (
+    <View className='py-4'>
+      <View className='flex-col'>
+        {/* Sections Title */}
+        <Text className='text-lg pl-4'>
+          Sections
+        </Text>
+
+        <View className='flex-row px-4 py-4 justify-evenly'>
+          {sectionsData.map((sectionData) => (
+            <VideoJumpSection name={sectionData.name} time={sectionData.time} setSectionsData={setSectionsData} />
+          ))}
+        </View>
+      </View>
+
+    </View>
+  )
+}
+
+function VideoJumpSection({ name, time, setSectionsData }: { name: string, time: string, setSectionsData: React.Dispatch<React.SetStateAction<{ name: string; time: string; }[]>> }) {
+  return (
+    <>
+      <Pressable className='px-5 py-4 bg-white border border-red rounded-sm' onPress={
+        () => {
+          setSectionsData((sectionsData) => {
+            return sectionsData.map((sectionData) => {
+              if (sectionData.name == name) {
+                if (time == '03:00') {
+                  return {
+                    ...sectionData,
+                    time: '00:00',
+                  }
+                }
+                return {
+                  ...sectionData,
+                  time: '03:00',
+                }
+              }
+
+              return sectionData;
+            })
+          })
+        }
+      }>
+        <View className='flex-col justify-center items-center'>
+          <Text>
+            {name}
+          </Text>
+
+          <Text>
+            {time}
+          </Text>
+        </View>
+      </Pressable>
+    </>
+  )
+}
 
 export default HomePage
