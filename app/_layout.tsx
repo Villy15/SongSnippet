@@ -1,12 +1,7 @@
 import { Stack } from 'expo-router';
-import React from 'react';
 
-export default function RootLayoutNav() {
+export default function HomeLayout() {
   return (
-    <Stack
-      screenOptions={{
-        title: 'SongSnippet',
-      }}
-    />
+      <Stack />
   );
 }
