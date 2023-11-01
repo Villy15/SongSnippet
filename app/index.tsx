@@ -154,8 +154,8 @@ function VideoSection() {
         </Text>
 
         <View className='flex-row px-4 py-4 justify-evenly'>
-          {sectionsData.map((sectionData) => (
-            <VideoJumpSection name={sectionData.name} time={sectionData.time} setSectionsData={setSectionsData} />
+          {sectionsData.map((sectionData, index) => (
+            <VideoJumpSection key={index} name={sectionData.name} time={sectionData.time} setSectionsData={setSectionsData} />
           ))}
         </View>
       </View>
@@ -183,7 +183,6 @@ function VideoJumpSection({ name, time, setSectionsData }: { name: string, time:
                   time: '03:00',
                 }
               }
-
               return sectionData;
             })
           })
